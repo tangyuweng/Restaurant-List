@@ -1,6 +1,5 @@
 const express = require('express')
 const { engine } = require('express-handlebars')
-const restaurants = require('./public/jsons/restaurant.json').results
 const db = require('./models')
 
 const app = express()
@@ -19,17 +18,36 @@ app.get('/', (req, res) => {
 
 app.get('/restaurants', (req, res) => {
   const keyword = req.query.search?.trim()
-  const searchProperties = ['name', 'category']
-  const matchedRestaurants = keyword
-    ? restaurants.filter((restaurant) =>
-        searchProperties.some((property) => {
-          return restaurant[property]
-            .toLowerCase()
-            .includes(keyword.toLowerCase())
-        })
-      )
-    : restaurants
-  res.render('index', { restaurants: matchedRestaurants, keyword })
+  if (keyword) {
+    const whereCondition = {
+      [db.Sequelize.Op.or]: [
+        {
+          name: {
+            [db.Sequelize.Op.like]: `%${keyword}%`
+          }
+        },
+        {
+          category: {
+            [db.Sequelize.Op.like]: `%${keyword}%`
+          }
+        }
+      ]
+    }
+    return Restaurant.findAll({
+      attributes: ['name', 'image', 'category', 'rating'],
+      where: whereCondition,
+      raw: true
+    })
+      .then((restaurants) => res.render('index', { restaurants, keyword }))
+      .catch((err) => console.log(err))
+  } else {
+    return Restaurant.findAll({
+      attributes: ['name', 'image', 'category', 'rating'],
+      raw: true
+    })
+      .then((restaurants) => res.render('index', { restaurants }))
+      .catch((err) => console.log(err))
+  }
 })
 
 app.get('/restaurants/:id', (req, res) => {
