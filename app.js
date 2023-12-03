@@ -16,6 +16,7 @@ app.get('/', (req, res) => {
   res.redirect('/restaurants')
 })
 
+// 瀏覽全部所有餐廳，收尋餐廳
 app.get('/restaurants', (req, res) => {
   const keyword = req.query.search?.trim()
   if (keyword) {
@@ -34,7 +35,7 @@ app.get('/restaurants', (req, res) => {
       ]
     }
     return Restaurant.findAll({
-      attributes: ['name', 'image', 'category', 'rating'],
+      attributes: ['id', 'name', 'image', 'category', 'rating'],
       where: whereCondition,
       raw: true
     })
@@ -42,7 +43,7 @@ app.get('/restaurants', (req, res) => {
       .catch((err) => console.log(err))
   } else {
     return Restaurant.findAll({
-      attributes: ['name', 'image', 'category', 'rating'],
+      attributes: ['id', 'name', 'image', 'category', 'rating'],
       raw: true
     })
       .then((restaurants) => res.render('index', { restaurants }))
@@ -50,12 +51,23 @@ app.get('/restaurants', (req, res) => {
   }
 })
 
+// 瀏覽指定餐廳
 app.get('/restaurants/:id', (req, res) => {
   const id = req.params.id // id = string
-  const foundRestaurant = restaurants.find(
-    (restaurant) => restaurant.id.toString() === id
-  )
-  res.render('show', { foundRestaurant })
+  return Restaurant.findByPk(id, {
+    attributes: [
+      'name',
+      'category',
+      'location',
+      'google_map',
+      'phone',
+      'description',
+      'image'
+    ],
+    raw: true
+  })
+    .then((restaurant) => res.render('show', { restaurant }))
+    .catch((err) => console.log(err))
 })
 
 app.listen(port, () => {
