@@ -78,6 +78,17 @@ header {
   text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
+.card-footer {
+  background: #fff;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: end;
+}
+
+.card-footer a {
+  margin: 0.4rem;
+}
+
 @media screen and (max-width: 992px) {
 
   .card img {
@@ -90,6 +101,10 @@ header {
   .restaurant-show-title {
     font-size: 2rem;
   }
+
+  .card-footer {
+    justify-content: center;
+  }
 }
 
 @media screen and (max-width: 575px) {
@@ -98,4 +113,7 @@ header {
     height: auto;
   }
 
+  .card-footer {
+    justify-content: end;
+  }
 }
