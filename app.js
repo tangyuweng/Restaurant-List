@@ -127,6 +127,17 @@ app.put('/restaurants/:id', async (req, res) => {
   }
 })
 
+// 刪除餐廳
+app.delete('/restaurants/:id', async (req, res) => {
+  try {
+    const id = req.params.id
+    await Restaurant.destroy({ where: { id } })
+    res.redirect('/restaurants')
+  } catch (err) {
+    console.log(err)
+  }
+})
+
 app.listen(port, () => {
   console.log(`App is running on http://localhost:${port}`)
 })

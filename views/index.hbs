@@ -23,27 +23,31 @@
       {{#if restaurants.length}}
       <div class="row row-cols-sm-3">
           {{#each restaurants as |restaurant|}}
-          <div class="card mb-3">
-            <a href="/restaurants/{{restaurant.id}}" class="text-secondary">
-              <img class="card-img-top" src="{{restaurant.image}}" alt="{{restaurant.name}}">
-            </a>
-            <div class="card-body p-3">
-              <h6 class="card-title mb-1">{{restaurant.name}}</h6>
+          <div class="mb-3">
+            <div class="card">
+              <a href="/restaurants/{{restaurant.id}}" class="text-secondary">
+                <img class="card-img-top" src="{{restaurant.image}}" alt="{{restaurant.name}}">
+              </a>
+              <div class="card-body p-3">
+                <h6 class="card-title mb-1">{{restaurant.name}}</h6>
 
-              <div class="restaurant-category mb-1">
-                <i class="fas fa-utensils pr-2"></i> {{restaurant.category}}
+                <div class="restaurant-category mb-1">
+                  <i class="fas fa-utensils pr-2"></i> {{restaurant.category}}
+                </div>
+
+                <span class="badge rounded-pill bg-danger font-weight-normal">
+                  {{restaurant.rating}}
+                  <i class="fas fa-star fa-xs"></i>
+                </span>
               </div>
-
-              <span class="badge rounded-pill bg-danger font-weight-normal">
-                {{restaurant.rating}}
-                <i class="fas fa-star fa-xs"></i>
-              </span>
+              <div class="card-footer align-items-center">
+                <a href="/restaurants/{{restaurant.id}}/edit" class="btn btn-outline-primary btn-sm">Edit</a>
+                <a href="/restaurants/{{restaurant.id}}" class="btn btn-outline-success btn-sm">Detail</a>
+                <form action="/restaurants/{{restaurant.id}}?_method=DELETE" method="POST">
+                  <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
+                </form>
+              </div> 
             </div>
-            <div class="card-footer">
-              <a href="/restaurants/{{restaurant.id}}/edit" class="btn btn-outline-primary btn-sm">Edit</a>
-              <a href="/restaurants/{{restaurant.id}}" class="btn btn-outline-success btn-sm">Detail</a>
-              <a href="" class="btn btn-outline-danger btn-sm">Delete</a>
-            </div> 
           </div>
           {{!-- </a> --}}
           {{/each}}

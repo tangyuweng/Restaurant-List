@@ -89,9 +89,14 @@ header {
 .restaurant-form {
   position: relative;
   top: -250px;
-  border: 1px solid red;
+  /* border: 1px solid red; */
   padding: 1rem;
   background: #fce2cf;
+  border-radius: 5px;
+  box-shadow: 8px 12px 8px 0px #ceb1a4;
+  -webkit-box-shadow: 8px 12px 8px 0px #ceb1a4;
+  -moz-box-shadow: 8px 12px 8px 0px #ceb1a4;
+  -o-box-shadow: 8px 12px 8px 0px #ceb1a4;
 }
 
 .card-footer {
@@ -102,6 +107,10 @@ header {
 }
 
 .card-footer a {
+  margin: 0.4rem;
+}
+
+.card-footer form {
   margin: 0.4rem;
 }
 
