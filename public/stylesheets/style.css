@@ -10,6 +10,14 @@ header {
   color: #226089;
 }
 
+#nav-link {
+  color: #4592af;
+}
+
+#nav-link:hover {
+  color: #226089;
+}
+
 .banner {
   position: relative;
   z-index: -1;
@@ -76,6 +84,14 @@ header {
   text-align: center;
   font-size: 3rem;
   text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.restaurant-form {
+  position: relative;
+  top: -250px;
+  border: 1px solid red;
+  padding: 1rem;
+  background: #fce2cf;
 }
 
 .card-footer {
