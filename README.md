@@ -8,6 +8,9 @@
 - 查看餐廳詳細資訊
 - 可依店名或餐廳類別收尋想要的餐廳
 - 連結餐廳地址到 Google Map
+- 加入 MySQL 資料庫存儲餐廳資訊
+- 可收藏新餐廳
+- 可編輯餐廳資訊
 
 ## 開始使用
 
@@ -40,3 +43,6 @@ App is running on http://localhost:3000
 - Express-Handlebars 7.1.2
 - Bootstrap 5.1.13
 - Font-awesome 6.4.2
+- MySQL2 3.2.0
+- Sequelize 6.30.0
+- Sequelize-cli 6.6.0
