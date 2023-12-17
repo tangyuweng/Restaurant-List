@@ -25,12 +25,38 @@ router.get('/', async (req, res, next) => {
         ]
       }
     }
+
+    const selectedSort = req.query.sort
+    let orderCondition = []
+    if (selectedSort) {
+      switch (selectedSort) {
+        case '1':
+          orderCondition = [['name', 'ASC']]
+          break
+        case '2':
+          orderCondition = [['name', 'DESC']]
+          break
+        case '3':
+          orderCondition = [['category', 'ASC']]
+          break
+        case '4':
+          orderCondition = [['location', 'ASC']]
+          break
+        case '5':
+          orderCondition = [['rating', 'DESC']]
+          break
+        default:
+          break
+      }
+    }
+
     const restaurants = await Restaurant.findAll({
-      attributes: ['id', 'name', 'image', 'category', 'rating'],
+      attributes: ['id', 'name', 'image', 'category', 'rating', 'location'],
       where: whereCondition,
+      order: orderCondition,
       raw: true
     })
-    res.render('index', { restaurants, keyword })
+    res.render('index', { restaurants, keyword, selectedSort })
   } catch (error) {
     error.errorMessage = '資料取得失敗'
     next(error)

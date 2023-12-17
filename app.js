@@ -12,7 +12,17 @@ const errorHandler = require('./middlewares/error-handler')
 const app = express()
 const port = 3000
 
-app.engine('.hbs', engine({ extname: '.hbs' }))
+app.engine(
+  '.hbs',
+  engine({
+    extname: '.hbs',
+    helpers: {
+      isEqual: (value1, value2) => {
+        return value1 === value2
+      }
+    }
+  })
+)
 app.set('view engine', '.hbs')
 app.set('views', './views')
 

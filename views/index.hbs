@@ -2,17 +2,28 @@
 <div class="container search-bar">
   <div class="search-bar-outer">
     <div class="search-bar-inner">
-      <form action="/restaurants">
+      <form action="/restaurants" id="restaurantForm">
         <h4 class="mb-2">尋找餐廳：</h4>
-        <div class="input-group">
-          <input type="text" name="search" class="form-control" placeholder="輸入餐廳、分類" aria-label="Restaurant Name..."
-            value="{{keyword}}" aria-describedby="search-button">
-          <div class="input-group-append">
-            <button class="btn btn-major" type="submit" id="search-button"><i class="fas fa-search"></i></button>
+        <div class="row justify-content-between">
+          <div class="col-8">
+            <div class="input-group col-4">
+              <input type="text" name="search" class="form-control" placeholder="輸入餐廳、分類" aria-label="Restaurant Name..."
+                value="{{keyword}}" aria-describedby="search-button">
+              <div class="input-group-append">
+                <button class="btn btn-major" type="submit" id="search-button"><i class="fas fa-search"></i></button>
+              </div>
+            </div>
           </div>
-          {{!-- 排序 --}}
-          {{!-- <input type="text" name="search" class="form-control" placeholder="輸入餐廳、分類" aria-label="Restaurant Name..."
-            value="{{keyword}}" aria-describedby="search-button"> --}}
+          <div class="col-4">
+            <select class="form-select" name="sort" id="sort-select" onchange="submitForm()">
+              <option {{#if selectedSort}} selected disabled {{/if}}>Sort</option>
+              <option value="1" {{#if (isEqual selectedSort '1')}} selected {{/if}}>A-Z</option>
+              <option value="2" {{#if (isEqual selectedSort '2')}} selected {{/if}}>Z-A</option>
+              <option value="3" {{#if (isEqual selectedSort '3')}} selected {{/if}}>類別</option>
+              <option value="4" {{#if (isEqual selectedSort '4')}} selected {{/if}}>地區</option>
+              <option value="5" {{#if (isEqual selectedSort '5' )}} selected {{/if}}>評分</option>
+            </select>
+          </div>
         </div>
       </form>
     </div>
