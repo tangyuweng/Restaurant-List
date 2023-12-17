@@ -106,6 +106,29 @@ header {
   margin: 0.4rem;
 }
 
+.message {
+  position: fixed;
+  top: 1%;
+  left: 50%;
+  /* 將容器置於水平方向中間 */
+  background-color: #ff6666;
+  color: #fff;
+  text-align: center;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  z-index: 9999;
+  opacity: 0;
+  /* 初始時透明度為 0 */
+  transition: opacity 0.5s;
+  /* 添加過渡效果，使顯示和隱藏更平滑 */
+}
+
+.message.show {
+  opacity: 1;
+  /* 顯示時透明度為 1 */
+}
+
 @media screen and (max-width: 992px) {
 
   .card img {

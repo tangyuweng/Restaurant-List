@@ -5,7 +5,7 @@ const db = require('../models')
 const Restaurant = db.Restaurant
 
 // 瀏覽全部所有餐廳，收尋餐廳
-router.get('/', async (req, res) => {
+router.get('/', async (req, res, next) => {
   try {
     const keyword = req.query.search?.trim()
     let whereCondition = {}
@@ -31,27 +31,31 @@ router.get('/', async (req, res) => {
       raw: true
     })
     res.render('index', { restaurants, keyword })
-  } catch (err) {
-    console.log(err)
+  } catch (error) {
+    error.errorMessage = '資料取得失敗'
+    next(error)
   }
 })
 
+// 新增餐廳頁面
 router.get('/new', (req, res) => {
   res.render('new')
 })
 
 // 新增餐廳
-router.post('/', async (req, res) => {
+router.post('/', async (req, res, next) => {
   try {
     await Restaurant.create(req.body)
+    req.flash('success', '新增成功')
     res.redirect('/restaurants')
-  } catch (err) {
-    console.log(err)
+  } catch (error) {
+    error.errorMessage = '新增失敗'
+    next(error)
   }
 })
 
 // 瀏覽指定餐廳
-router.get('/:id', async (req, res) => {
+router.get('/:id', async (req, res, next) => {
   try {
     const id = req.params.id // id = string
     const restaurant = await Restaurant.findByPk(id, {
@@ -69,13 +73,14 @@ router.get('/:id', async (req, res) => {
       raw: true
     })
     res.render('show', { restaurant })
-  } catch (err) {
-    console.log(err)
+  } catch (error) {
+    error.errorMessage = '資料取得失敗'
+    next(error)
   }
 })
 
 // 編輯餐廳頁
-router.get('/:id/edit', async (req, res) => {
+router.get('/:id/edit', async (req, res, next) => {
   try {
     const id = req.params.id
     const restaurant = await Restaurant.findByPk(id, {
@@ -94,30 +99,35 @@ router.get('/:id/edit', async (req, res) => {
       raw: true
     })
     res.render('edit', { restaurant })
-  } catch (err) {
-    console.log(err)
+  } catch (error) {
+    error.errorMessage = '資料取得失敗'
+    next(error)
   }
 })
 
 // 更新餐廳
-router.put('/:id', async (req, res) => {
+router.put('/:id', async (req, res, next) => {
   try {
     const id = req.params.id
     await Restaurant.update(req.body, { where: { id: id } })
+    req.flash('success', '更新成功')
     res.redirect(`/restaurants/${id}`)
-  } catch (err) {
-    console.log(err)
+  } catch (error) {
+    error.errorMessage = '更新失敗'
+    next(error)
   }
 })
 
 // 刪除餐廳
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', async (req, res, next) => {
   try {
     const id = req.params.id
     await Restaurant.destroy({ where: { id } })
+    req.flash('success', '刪除成功')
     res.redirect('/restaurants')
-  } catch (err) {
-    console.log(err)
+  } catch (error) {
+    error.errorMessage = '刪除失敗'
+    next(error)
   }
 })
 

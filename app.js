@@ -6,6 +6,8 @@ const bodyParser = require('body-parser')
 const methodOverride = require('method-override')
 require('dotenv').config()
 const router = require('./routes')
+const messageHandler = require('./middlewares/message-handler')
+const errorHandler = require('./middlewares/error-handler')
 
 const app = express()
 const port = 3000
@@ -27,7 +29,11 @@ app.use(
 )
 app.use(flash())
 
+app.use(messageHandler)
+
 app.use(router)
+
+app.use(errorHandler)
 
 app.listen(port, () => {
   console.log(`App is running on http://localhost:${port}`)

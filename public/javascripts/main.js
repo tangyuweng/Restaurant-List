@@ -1,0 +1,9 @@
+const message = document.querySelector('.message')
+
+if (message) {
+  message.classList.add('show')
+
+  setTimeout(() => {
+    message.classList.remove('show')
+  }, 3000)
+}
