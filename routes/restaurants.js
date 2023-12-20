@@ -4,7 +4,7 @@ const router = express.Router()
 const db = require('../models')
 const Restaurant = db.Restaurant
 
-// 瀏覽全部所有餐廳，收尋餐廳
+// 瀏覽全部所有餐廳，收尋 排序 分頁
 router.get('/', async (req, res, next) => {
   try {
     const keyword = req.query.search?.trim()
@@ -50,13 +50,32 @@ router.get('/', async (req, res, next) => {
       }
     }
 
-    const restaurants = await Restaurant.findAll({
+    const page = parseInt(req.query.page) || 1
+    const limit = 9
+    const { count, rows: restaurants } = await Restaurant.findAndCountAll({
       attributes: ['id', 'name', 'image', 'category', 'rating', 'location'],
       where: whereCondition,
       order: orderCondition,
+      offset: (page - 1) * limit,
+      limit: limit,
       raw: true
     })
-    res.render('index', { restaurants, keyword, selectedSort })
+
+    const totalPages = Math.ceil(count / limit)
+    const pages = Array.from({ length: totalPages }, (_, index) => index + 1)
+    const prevDisabled = page === 1
+    const nextDisabled = page === totalPages
+
+    res.render('index', {
+      restaurants,
+      keyword,
+      selectedSort,
+      pages,
+      prevPage: page > 1 ? page - 1 : page,
+      nextPage: page + 1,
+      prevDisabled,
+      nextDisabled
+    })
   } catch (error) {
     error.errorMessage = '資料取得失敗'
     next(error)
