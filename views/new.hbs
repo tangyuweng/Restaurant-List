@@ -63,7 +63,7 @@
         <div class="row mb-3">
           <label for="phone" class="col-sm-2 col-form-label">餐廳電話</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control" id="phone" name="phone" value="{{formData.phone}}" placeholder="02 232 4545" required pattern="[0-9]{2} [0-9]{3} [0-9]{4}">
+            <input type="text" class="form-control" id="phone" name="phone" value="{{formData.phone}}" placeholder="02 2323 4545" required pattern="[0-9]{2} [0-9]{4} [0-9]{4}">
             <small class="text-muted">＊必填欄位</small>
             {{#if validation_error}}
               <small class="text-danger">{{validation_error.phone}}</small>

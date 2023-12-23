@@ -48,7 +48,7 @@ const restaurantValidationRules = [
     .trim()
     .notEmpty()
     .withMessage('請輸入餐廳電話')
-    .matches(/^\d{2} \d{3} \d{4}$/)
+    .matches(/^\d{2} \d{4} \d{4}$/)
     .withMessage('請輸入有效的電話號碼 (例如: 02 2323 4545)'),
 
   check('google_map')
