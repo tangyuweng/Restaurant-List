@@ -108,9 +108,9 @@ header {
 
 .message {
   position: fixed;
-  top: 1%;
+  top: 12%;
   left: 50%;
-  /* 將容器置於水平方向中間 */
+  transform: translate(-50%, -50%);
   background-color: #ff6666;
   color: #fff;
   text-align: center;

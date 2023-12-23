@@ -1,5 +1,7 @@
 const express = require('express')
 const router = express.Router()
+const restaurantValidationRules = require('../middlewares/restaurantValidationRules')
+const { validationResult } = require('express-validator')
 
 const db = require('../models')
 const Restaurant = db.Restaurant
@@ -84,13 +86,33 @@ router.get('/', async (req, res, next) => {
 
 // 新增餐廳頁面
 router.get('/new', (req, res) => {
-  res.render('new')
+  // 取得之前保存的填寫資料
+  const formData = req.session.formData || {}
+  // 清除 session 中的 formData
+  delete req.session.formData
+  res.render('new', { formData })
 })
 
 // 新增餐廳
-router.post('/', async (req, res, next) => {
+router.post('/', restaurantValidationRules, async (req, res, next) => {
   try {
+    const errors = validationResult(req)
+
+    if (!errors.isEmpty()) {
+      // 保留填寫資料到 session
+      req.session.formData = req.body
+      // 將驗證錯誤訊息轉為 key-value pair
+      const errorObject = {}
+      errors.array().forEach((error) => {
+        errorObject[error.path] = error.msg
+      })
+      req.flash('validation_error', errorObject)
+      return res.redirect('back')
+    }
+
     await Restaurant.create(req.body)
+    // 清除 session 中的 formData
+    delete req.session.formData
     req.flash('success', '新增成功')
     res.redirect('/restaurants')
   } catch (error) {
@@ -102,7 +124,7 @@ router.post('/', async (req, res, next) => {
 // 瀏覽指定餐廳
 router.get('/:id', async (req, res, next) => {
   try {
-    const id = req.params.id // id = string
+    const id = parseInt(req.params.id)
     const restaurant = await Restaurant.findByPk(id, {
       attributes: [
         'name',
@@ -127,7 +149,7 @@ router.get('/:id', async (req, res, next) => {
 // 編輯餐廳頁
 router.get('/:id/edit', async (req, res, next) => {
   try {
-    const id = req.params.id
+    const id = parseInt(req.params.id)
     const restaurant = await Restaurant.findByPk(id, {
       attributes: [
         'id',
@@ -151,10 +173,20 @@ router.get('/:id/edit', async (req, res, next) => {
 })
 
 // 更新餐廳
-router.put('/:id', async (req, res, next) => {
+router.put('/:id', restaurantValidationRules, async (req, res, next) => {
   try {
-    const id = req.params.id
-    await Restaurant.update(req.body, { where: { id: id } })
+    const id = parseInt(req.params.id)
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      const errorObject = {}
+      errors.array().forEach((error) => {
+        errorObject[error.path] = error.msg
+      })
+      req.flash('validation_error', errorObject)
+      res.redirect('back')
+    }
+
+    await Restaurant.update(req.body, { where: { id } })
     req.flash('success', '更新成功')
     res.redirect(`/restaurants/${id}`)
   } catch (error) {
@@ -166,7 +198,7 @@ router.put('/:id', async (req, res, next) => {
 // 刪除餐廳
 router.delete('/:id', async (req, res, next) => {
   try {
-    const id = req.params.id
+    const id = parseInt(req.params.id)
     await Restaurant.destroy({ where: { id } })
     req.flash('success', '刪除成功')
     res.redirect('/restaurants')

@@ -57,13 +57,14 @@
               <div class="card-footer align-items-center">
                 <a href="/restaurants/{{restaurant.id}}/edit" class="btn btn-outline-primary btn-sm">Edit</a>
                 <a href="/restaurants/{{restaurant.id}}" class="btn btn-outline-success btn-sm">Detail</a>
-                <form action="/restaurants/{{restaurant.id}}?_method=DELETE" method="POST">
-                  <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
+                <button class="btn btn-outline-danger btn-sm" onclick="confirmDelete({{restaurant.id}})">Delete</button>
+                <form id="deleteForm_{{restaurant.id}}" action="/restaurants/{{restaurant.id}}?_method=DELETE" method="POST"
+                  style="display: none;">
+                  <button type="submit"></button>
                 </form>
               </div> 
             </div>
           </div>
-          {{!-- </a> --}}
           {{/each}}
       </div>
       {{else}}

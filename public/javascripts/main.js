@@ -14,3 +14,10 @@ function submitForm() {
   restaurantForm.action = '/restaurants?sort=' + selectedValue
   restaurantForm.submit()
 }
+
+function confirmDelete(restaurantId) {
+  const strRestaurantId = restaurantId.toString()
+  if (confirm('是否删除?')) {
+    document.querySelector('#deleteForm_' + strRestaurantId).submit()
+  }
+}
