@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const restaurantValidationRules = require('../middlewares/restaurantValidationRules')
 const { validationResult } = require('express-validator')
+const toErrorObject = require('../middlewares/toErrorObject')
 
 const db = require('../models')
 const Restaurant = db.Restaurant
@@ -102,10 +103,8 @@ router.post('/', restaurantValidationRules, async (req, res, next) => {
       // 保留填寫資料到 session
       req.session.formData = req.body
       // 將驗證錯誤訊息轉為 key-value pair
-      const errorObject = {}
-      errors.array().forEach((error) => {
-        errorObject[error.path] = error.msg
-      })
+      const errorObject = toErrorObject(errors)
+
       req.flash('validation_error', errorObject)
       return res.redirect('back')
     }
@@ -178,12 +177,9 @@ router.put('/:id', restaurantValidationRules, async (req, res, next) => {
     const id = parseInt(req.params.id)
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
-      const errorObject = {}
-      errors.array().forEach((error) => {
-        errorObject[error.path] = error.msg
-      })
+      const errorObject = toErrorObject(errors)
       req.flash('validation_error', errorObject)
-      res.redirect('back')
+      return res.redirect('back')
     }
 
     await Restaurant.update(req.body, { where: { id } })
