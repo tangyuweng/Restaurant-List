@@ -2,8 +2,10 @@ const express = require('express')
 const router = express.Router()
 
 const restaurants = require('./restaurants')
+const users = require('./users')
 
 router.use('/restaurants', restaurants)
+router.use('/users', users)
 
 router.get('/', (req, res) => {
   res.redirect('/restaurants')
@@ -15,13 +17,6 @@ router.get('/register', (req, res) => {
 
 router.get('/login', (req, res) => {
   res.render('login', { noBody: true })
-})
-
-router.post('/register', (req, res) => {
-  const body = req.body
-  res.send(
-    `name: ${body.name}, email: ${body.email}, password: ${body.password}, confirmPwd: ${body.confirmPwd}`
-  )
 })
 
 router.post('/login', (req, res) => {
