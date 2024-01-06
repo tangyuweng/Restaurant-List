@@ -8,25 +8,29 @@
   <link rel="stylesheet" href="/stylesheets/style.css">
 </head>
 <body>
-  <header>
-    {{> message}}
-    <!-- navigation -->
-    <nav class="navbar navbar-light bg-light">
-      <div class="container">
-        <a class="navbar-brand" href="/">
-          <img src="https://assets-lighthouse.s3.amazonaws.com/uploads/image/file/6227/restaurant-list-logo.png"
-            width="30" height="30" class="d-inline-block align-top" alt="我的餐廳清單">
-          我的餐廳清單
-        </a>
-        <a class="btn btn-primary" href="/restaurants/new">Create Restaurant</a>
-      </div>
-    </nav>
-  
-    <div class="banner"></div>
-  </header>
+  {{> message}}
+  {{#if noBody}}
 
-  {{{body}}}
-  
+    {{{body}}}
+
+  {{else}}
+    <header>
+      <!-- navigation -->
+      <nav class="navbar navbar-light bg-light">
+        <div class="container">
+          <a class="navbar-brand" href="/">
+            <img src="https://assets-lighthouse.s3.amazonaws.com/uploads/image/file/6227/restaurant-list-logo.png"
+              width="30" height="30" class="d-inline-block align-top" alt="我的餐廳清單">
+            我的餐廳清單
+          </a>
+          <a class="btn btn-primary" href="/restaurants/new">Create Restaurant</a>
+        </div>
+      </nav>
+    
+      <div class="banner"></div>
+    </header>
+    {{{body}}}
+  {{/if}}
   <script src="https://kit.fontawesome.com/9e5d94ed1b.js" crossorigin="anonymous"></script>
   <script src="/javascripts/bootstrap.min.js"></script>
   <script src="/javascripts/main.js"></script>

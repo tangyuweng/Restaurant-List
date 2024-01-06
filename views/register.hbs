@@ -1,0 +1,47 @@
+{{#noBody}}
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="mb-0">Register</h3>
+          </div>
+          <div class="card-body">
+            <form action="/register" method="POST">
+              <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" class="form-control" id="name" name="name" placeholder="Enter name" required>
+              </div>
+              <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" required>
+              </div>
+              <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" class="form-control" id="password" name="password" placeholder="Enter password" required>
+              </div>
+              <div class="form-group">
+                <label for="confirmPwd">Confirm password:</label>
+                <input type="password" class="form-control" id="confirmPwd" name="confirmPwd" placeholder="Confirm password" required>
+              </div>
+              <div class="d-grid mx-auto m-2">
+                <button type="submit" class="btn btn-success btn-md">Register</button>
+              </div>
+            </form>
+            <div class="text-center">or</div>
+            <form action="">
+              <div class="d-grid mx-auto m-2">
+                <button type="submit" class="btn btn-primary btn-md">Facebook Login</button>
+                {{!-- <button type="submit" class="btn btn-primary btn-lg">Facebook Login</button> --}}
+              </div>
+            </form>
+            
+            <div class="text-end">
+              <a href="/login">Login</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{{/noBody}}
