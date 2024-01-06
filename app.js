@@ -6,6 +6,7 @@ const bodyParser = require('body-parser')
 const methodOverride = require('method-override')
 require('dotenv').config()
 const router = require('./routes')
+const passport = require('./config/passport')
 const messageHandler = require('./middlewares/message-handler')
 const errorHandler = require('./middlewares/error-handler')
 
@@ -38,6 +39,10 @@ app.use(
   })
 )
 app.use(flash())
+
+app.use(passport.initialize())
+
+app.use(passport.session())
 
 app.use(messageHandler)
 

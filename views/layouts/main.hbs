@@ -23,7 +23,13 @@
               width="30" height="30" class="d-inline-block align-top" alt="我的餐廳清單">
             我的餐廳清單
           </a>
-          <a class="btn btn-primary" href="/restaurants/new">Create Restaurant</a>
+          <div class="d-flex">
+            <a class="btn btn-primary" href="/restaurants/new">Create</a>
+            <form action="/logout" method="POST" style="margin-left: 1rem;">
+              <button class="btn btn-success" type="submit">登出</button>
+            </form>
+          </div>
+          
         </div>
       </nav>
     
