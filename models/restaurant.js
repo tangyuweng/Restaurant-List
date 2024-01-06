@@ -8,7 +8,9 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      Restaurant.belongsTo(models.User, {
+        foreignKey: 'userId'
+      })
     }
   }
   Restaurant.init(
@@ -51,6 +53,10 @@ module.exports = (sequelize, DataTypes) => {
       },
       updatedAt: {
         type: DataTypes.DATE
+      },
+      userId: {
+        type: DataTypes.INTEGER,
+        allowNull: false
       }
     },
     {
