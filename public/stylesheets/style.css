@@ -106,7 +106,7 @@ header {
   margin: 0.4rem;
 }
 
-.message {
+.message_err {
   position: fixed;
   top: 12%;
   left: 50%;
@@ -124,7 +124,26 @@ header {
   /* 添加過渡效果，使顯示和隱藏更平滑 */
 }
 
-.message.show {
+.message_suc {
+  position: fixed;
+  top: 12%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #38c155;
+  color: #fff;
+  text-align: center;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  z-index: 9999;
+  opacity: 0;
+  /* 初始時透明度為 0 */
+  transition: opacity 0.5s;
+  /* 添加過渡效果，使顯示和隱藏更平滑 */
+}
+
+.message_err.show,
+.message_suc.show {
   opacity: 1;
   /* 顯示時透明度為 1 */
 }

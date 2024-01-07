@@ -29,6 +29,9 @@ router.get('/', async (req, res, next) => {
       }
     }
 
+    const userId = req.user.id
+    whereCondition.userId = userId
+
     const selectedSort = req.query.sort
     let orderCondition = []
     if (selectedSort) {
@@ -55,6 +58,7 @@ router.get('/', async (req, res, next) => {
 
     const page = parseInt(req.query.page) || 1
     const limit = 9
+
     const { count, rows: restaurants } = await Restaurant.findAndCountAll({
       attributes: ['id', 'name', 'image', 'category', 'rating', 'location'],
       where: whereCondition,
@@ -97,6 +101,7 @@ router.get('/new', (req, res) => {
 // 新增餐廳
 router.post('/', restaurantValidationRules, async (req, res, next) => {
   try {
+    const userId = req.user.id
     const errors = validationResult(req)
 
     if (!errors.isEmpty()) {
@@ -108,6 +113,8 @@ router.post('/', restaurantValidationRules, async (req, res, next) => {
       req.flash('validation_error', errorObject)
       return res.redirect('back')
     }
+
+    req.body.userId = userId
 
     await Restaurant.create(req.body)
     // 清除 session 中的 formData
@@ -123,6 +130,7 @@ router.post('/', restaurantValidationRules, async (req, res, next) => {
 // 瀏覽指定餐廳
 router.get('/:id', async (req, res, next) => {
   try {
+    const userId = req.user.id
     const id = parseInt(req.params.id)
     const restaurant = await Restaurant.findByPk(id, {
       attributes: [
@@ -134,10 +142,22 @@ router.get('/:id', async (req, res, next) => {
         'phone',
         'google_map',
         'rating',
-        'description'
+        'description',
+        'userId'
       ],
       raw: true
     })
+
+    if (!restaurant) {
+      req.flash('error', '資料不存在')
+      return res.redirect('/restaurants')
+    }
+
+    if (restaurant.userId !== userId) {
+      req.flash('error', '使用者權限不足')
+      return res.redirect('/restaurants')
+    }
+
     res.render('show', { restaurant })
   } catch (error) {
     error.errorMessage = '資料取得失敗'
@@ -148,6 +168,7 @@ router.get('/:id', async (req, res, next) => {
 // 編輯餐廳頁
 router.get('/:id/edit', async (req, res, next) => {
   try {
+    const userId = req.user.id
     const id = parseInt(req.params.id)
     const restaurant = await Restaurant.findByPk(id, {
       attributes: [
@@ -160,10 +181,22 @@ router.get('/:id/edit', async (req, res, next) => {
         'phone',
         'google_map',
         'rating',
-        'description'
+        'description',
+        'userId'
       ],
       raw: true
     })
+
+    if (!restaurant) {
+      req.flash('error', '資料不存在')
+      return res.redirect('/restaurants')
+    }
+
+    if (restaurant.userId !== userId) {
+      req.flash('error', '使用者權限不足')
+      return res.redirect('/restaurants')
+    }
+
     res.render('edit', { restaurant })
   } catch (error) {
     error.errorMessage = '資料取得失敗'
@@ -174,6 +207,7 @@ router.get('/:id/edit', async (req, res, next) => {
 // 更新餐廳
 router.put('/:id', restaurantValidationRules, async (req, res, next) => {
   try {
+    const userId = req.user.id
     const id = parseInt(req.params.id)
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
@@ -182,7 +216,34 @@ router.put('/:id', restaurantValidationRules, async (req, res, next) => {
       return res.redirect('back')
     }
 
-    await Restaurant.update(req.body, { where: { id } })
+    const restaurant = await Restaurant.findByPk(id, {
+      attributes: [
+        'id',
+        'name',
+        'name_en',
+        'category',
+        'image',
+        'location',
+        'phone',
+        'google_map',
+        'rating',
+        'description',
+        'userId'
+      ]
+    })
+
+    if (!restaurant) {
+      req.flash('error', '資料不存在')
+      return res.redirect('/restaurants')
+    }
+
+    if (restaurant.userId !== userId) {
+      req.flash('error', '使用者權限不足')
+      return res.redirect('/restaurants')
+    }
+
+    await restaurant.update(req.body)
+
     req.flash('success', '更新成功')
     res.redirect(`/restaurants/${id}`)
   } catch (error) {
@@ -194,8 +255,37 @@ router.put('/:id', restaurantValidationRules, async (req, res, next) => {
 // 刪除餐廳
 router.delete('/:id', async (req, res, next) => {
   try {
+    const userId = req.user.id
     const id = parseInt(req.params.id)
-    await Restaurant.destroy({ where: { id } })
+
+    const restaurant = await Restaurant.findByPk(id, {
+      attributes: [
+        'id',
+        'name',
+        'name_en',
+        'category',
+        'image',
+        'location',
+        'phone',
+        'google_map',
+        'rating',
+        'description',
+        'userId'
+      ]
+    })
+
+    if (!restaurant) {
+      req.flash('error', '資料不存在')
+      return res.redirect('/restaurants')
+    }
+
+    if (restaurant.userId !== userId) {
+      req.flash('error', '使用者權限不足')
+      return res.redirect('/restaurants')
+    }
+
+    await restaurant.destroy()
+
     req.flash('success', '刪除成功')
     res.redirect('/restaurants')
   } catch (error) {

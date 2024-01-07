@@ -1,12 +1,18 @@
-const message = document.querySelector('.message')
+const message_err = document.querySelector('.message_err')
+const message_suc = document.querySelector('.message_suc')
 
-if (message) {
-  message.classList.add('show')
+function showMessage(element) {
+  if (element) {
+    element.classList.add('show')
 
-  setTimeout(() => {
-    message.classList.remove('show')
-  }, 3000)
+    setTimeout(() => {
+      element.classList.remove('show')
+    }, 3000)
+  }
 }
+
+showMessage(message_err)
+showMessage(message_suc)
 
 function submitForm() {
   const restaurantForm = document.querySelector('#restaurantForm')
