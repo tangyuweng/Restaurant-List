@@ -23,7 +23,7 @@
             <form action="/users" method="POST">
               <div class="form-group">
                 <label for="name">Name:</label>
-                <input type="text" class="form-control" id="name" name="name" placeholder="Enter name" required>
+                <input type="text" class="form-control" id="name" name="name" placeholder="Enter name">
                 {{#if register_error}}
                   <small class="text-danger">{{register_error.name}}</small>
                 {{/if}}

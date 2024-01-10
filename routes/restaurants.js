@@ -52,6 +52,7 @@ router.get('/', async (req, res, next) => {
           orderCondition = [['rating', 'DESC']]
           break
         default:
+          orderCondition = [['name', 'ASC']]
           break
       }
     }

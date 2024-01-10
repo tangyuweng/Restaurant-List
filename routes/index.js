@@ -12,7 +12,7 @@ router.use('/restaurants', authHandler, restaurants)
 router.use('/users', users)
 
 router.get('/', (req, res) => {
-  res.redirect('/login')
+  res.redirect('/restaurants')
 })
 
 router.get('/register', (req, res) => {
@@ -35,6 +35,7 @@ router.post(
 router.post('/logout', (req, res) => {
   req.logout((error) => {
     if (error) next(error)
+    req.flash('success', '登出成功')
     return res.redirect('/login')
   })
 })

@@ -3,8 +3,6 @@ const { check } = require('express-validator')
 const registrationValidationRules = [
   check('name')
     .trim()
-    .notEmpty()
-    .withMessage('請輸入使用者名稱')
     .isLength({ max: 20 })
     .withMessage('使用者名稱最多20個字'),
   check('email').trim().isEmail().withMessage('請輸入有效的電子信箱'),
